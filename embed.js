@@ -41,3 +41,31 @@ if (!window.VINE_EMBEDS) {
 		}
 	}, 100);
 
+	var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+	var listenForEvent = window[eventMethod];
+	var eventName = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
+
+	listenForEvent(eventName, function (event) {
+		var e = event.data.split('::');
+		window.VINE_DEBUG.push(event.data);
+		if (e[0] == 'height') {
+			var embeds = document.querySelectorAll('iframe[src="' + e[1] + '"]');
+			for (var i = 0; i < embeds.length; i++) {
+				newHeight = parseInt(e[2]);
+				if (embeds[i].style.removeProperty) {
+					embeds[i].style.removeProperty('height');
+				} else {
+					embeds[i].style.removeAttribute('height');
+				}
+				embeds[i].height = newHeight * 1;
+			}
+
+		} else if (e[0] == 'loaded') {
+			var embeds = document.querySelectorAll('iframe[src="' + e[1] + '"]');
+			for (var i = 0; i < embeds.length; i++) {
+				embeds[i].setAttribute('frameborder', 0);
+				addClass(embeds[i], 'loaded');
+			}
+		}
+	});
+}
