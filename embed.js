@@ -59,7 +59,20 @@ if (!window.VINE_EMBEDS) {
 				}
 				embeds[i].height = newHeight * 1;
 			}
-
+		} else if (e[0] == 'unmute') {
+			var embeds = document.querySelectorAll('iframe[src="' + e[1] + '"]');
+			var target = null;
+			for (var i = 0; i < embeds.length; i++) {
+				target = embeds[i];
+				addClass(embeds[i], 'unmuted');
+			}
+			var embeds = document.querySelectorAll('iframe.unmuted');
+			for (var i = 0; i < embeds.length; i++) {
+				if (embeds[i] != target) {
+					removeClass(embeds[i], 'unmuted');
+					embeds[i].contentWindow.postMessage('mute', '*');
+				}
+			}
 		} else if (e[0] == 'loaded') {
 			var embeds = document.querySelectorAll('iframe[src="' + e[1] + '"]');
 			for (var i = 0; i < embeds.length; i++) {
