@@ -28,12 +28,12 @@ if (!window.VINE_EMBEDS) {
 					if (!hasClass(embeds[i], 'playing')) {
 						window.VINE_DEBUG.push(embeds[i].src + ' entered screen');
 						addClass(embeds[i], 'playing');
-						embeds[i].contentWindow.postMessage('pause', '*');
+						embeds[i].contentWindow.postMessage('play', '*');
 					}
 				} else {
 					if (hasClass(embeds[i], 'playing')) {
 						removeClass(embeds[i], 'playing');
-						embeds[i].contentWindow.postMessage('play', '*');
+						embeds[i].contentWindow.postMessage('pause', '*');
 					}
 				}
 			}
